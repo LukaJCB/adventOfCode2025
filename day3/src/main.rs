@@ -26,21 +26,14 @@ fn all_joltages_pt2(banks: &Vec<String>) -> u64 {
 }
 
 fn largest_joltage(s: &str, length: usize) -> u64 {
-    let digits: Vec<u32> = s.chars().map(|c| c.to_digit(10).unwrap()).collect();
+    let digits: Vec<u8> = s.chars().map(|c| c.to_digit(10).unwrap() as u8).collect();
 
     let mut start_at = 0;
     let mut result = Vec::new();
     for i in 0..length {
         let end_at = digits.len() - (length - i - 1);
 
-        let mut largest = 0;
-
-        for x in start_at..end_at {
-            let d = digits.get(x).unwrap();
-            if *d >= largest {
-                largest = *d;
-            }
-        }
+        let largest = *digits[start_at..end_at].iter().max().unwrap();
 
         result.push(largest);
 
@@ -55,7 +48,7 @@ fn largest_joltage(s: &str, length: usize) -> u64 {
     vec_to_int(result)
 }
 
-fn vec_to_int(v: Vec<u32>) -> u64 {
+fn vec_to_int(v: Vec<u8>) -> u64 {
     let result_string = v
         .iter()
         .map(|u| u.to_string())
