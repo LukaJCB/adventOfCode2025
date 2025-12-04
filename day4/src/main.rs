@@ -9,7 +9,10 @@ fn main() {
 
     let result = total_forklift_accesible(&input);
 
+    let result_pt2 = remove_total_forklift_accesible(&input);
+
     println!("{result}");
+    println!("{result_pt2}");
 }
 
 fn total_forklift_accesible(input: &Vec<String>) -> usize {
@@ -23,6 +26,30 @@ fn total_forklift_accesible(input: &Vec<String>) -> usize {
         }
     }
     result
+}
+
+fn remove_total_forklift_accesible(input: &Vec<String>) -> usize {
+    let mut grid = parse_input(input);
+
+    let mut total_removed = 0;
+    while let Some(i) = removal_round(&mut grid) {
+        total_removed += i;
+    }
+
+    total_removed
+}
+
+fn removal_round(grid: &mut Vec<Vec<bool>>) -> Option<usize> {
+    let mut result = 0;
+    for (x, xs) in grid.clone().iter().enumerate() {
+        for (y, is_roll) in xs.iter().enumerate() {
+            if *is_roll && forklift_accesible(x, y, &grid) {
+                grid[x][y] = false;
+                result += 1;
+            }
+        }
+    }
+    if result > 0 { Some(result) } else { None }
 }
 
 fn parse_input(input: &Vec<String>) -> Vec<Vec<bool>> {
